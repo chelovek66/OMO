@@ -1,9 +1,10 @@
-import pandas as P
+import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+PATH = r'C:\\Users\\user\\OneDrive\\Рабочий стол\\ОМО ЛР\\2\\1.csv'
 
-t = P.read_csv(r'C:\Users\user\OneDrive\Рабочий стол\ОМО ЛР\2\1.csv')
+t = pd.read_csv(PATH)
 
 
 t['Income'] = t['Income'].astype(str).str.replace(r'[$,\s]', '', regex=True)
@@ -14,29 +15,30 @@ print(t.describe())
 
 t['TotalSpending'] = t[['MntWines', 'MntFruits', 'MntMeatProducts', 'MntFishProducts', 'MntSweetProducts', 'MntGoldProds']].sum(axis=1)
 t['Rest'] = t['Income']-t['TotalSpending']
-t['IncomeLevel'] = P.cut(t['Income'],bins=[0, 30000, 70000, float('inf')],labels=['Small', 'Medium', 'High'])
+t['IncomeLevel'] = pd.cut(t['Income'],bins=[0, 30000, 70000, float('inf')],labels=['Small', 'Medium', 'High'])
 
 print(t)
 
 sns.set_style("whitegrid")
+plt.subplot(2,2,1)
 sns.histplot(t['Income'], bins=30, kde=True)
 plt.title("Распределение доходов")
 plt.xlabel("Доход")
 plt.ylabel("Частота")
-plt.show()
 
+plt.subplot(2,2,2)
 sns.scatterplot(x=t['Income'], y=t['TotalSpending'])
 plt.title("Связь между доходом и расходами")
 plt.xlabel("Доход")
 plt.ylabel("Общие расходы")
-plt.show()
 
+plt.subplot(2,2,3)
 sns.countplot(x=t['IncomeLevel'])
 plt.title("Распределение клиентов по уровню дохода")
 plt.xlabel("Уровень дохода")
 plt.ylabel("Количество клиентов")
-plt.show()
 
+plt.subplot(2,2,4)
 sns.boxplot(x=t['Income'])
 plt.title("Boxplot доходов")
 plt.xlabel("Доход")
@@ -78,7 +80,6 @@ t = DP.NoNull_O(t)
 
 t.info()
 
-sns.set_style("whitegrid")
 sns.histplot(t['Year_Birth'], bins=30, kde=True)
 plt.title("Распределение доходов")
 plt.xlabel("Доход")
